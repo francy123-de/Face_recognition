@@ -1,0 +1,38 @@
+{
+  "date": "2026-02-09",
+  "records": {
+    "darmian": {
+      "full_name": "Darmian Fransisco",
+      "registration_number": "BCS-02-0100-2023",
+      "course": "Computer Science",
+      "year": "3th Year",
+      "timestamp": "2026-02-09 12:29:48",
+      "confidence": "56.1%",
+      "status": "Present"
+    },
+    "Lameck": {
+      "full_name": "Lameck Kapuga",
+      "registration_number": "BCS-02-0111-2023",
+      "course": "Computer Science",
+      "year": "3rd Year",
+      "timestamp": "2026-02-09 12:30:58",
+      "confidence": "38.2%",
+      "status": "Present"
+    },
+    "Jonas": {
+      "full_name": "Jonas Japhet",
+      "registration_number": "BIT-02-0072-2023",
+      "course": "Information Technology",
+      "year": "3rd Year",
+      "timestamp": "2026-02-09 13:11:35",
+      "confidence": "59.7%",
+      "status": "Present"
+    }
+  },
+  "marked": [
+    "Jonas",
+    "Lameck",
+    "darmian"
+  ],
+  "total_present": 3
+}

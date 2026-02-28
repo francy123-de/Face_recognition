@@ -1,0 +1,14 @@
+{
+  "date": "2026-02-07",
+  "records": {
+    "darmian": {
+      "timestamp": "2026-02-07 16:11:31",
+      "confidence": "43.3%",
+      "status": "Present"
+    }
+  },
+  "marked": [
+    "darmian"
+  ],
+  "total_present": 1
+}

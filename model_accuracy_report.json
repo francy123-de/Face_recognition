@@ -1,0 +1,56 @@
+{
+  "total_tests": 70,
+  "correct": 47,
+  "incorrect": 23,
+  "per_student": {
+    "Abiud": {
+      "accuracy": 10.0,
+      "correct": 1,
+      "total": 10,
+      "avg_confidence": 28.310243937759083,
+      "avg_gap": 8.709120946949819
+    },
+    "Adiriano": {
+      "accuracy": 100.0,
+      "correct": 10,
+      "total": 10,
+      "avg_confidence": 67.44315838276538,
+      "avg_gap": 58.52292284898518
+    },
+    "Enecky": {
+      "accuracy": 90.0,
+      "correct": 9,
+      "total": 10,
+      "avg_confidence": 36.7384849656011,
+      "avg_gap": 20.29123190815769
+    },
+    "Irene": {
+      "accuracy": 90.0,
+      "correct": 9,
+      "total": 10,
+      "avg_confidence": 28.706778423324803,
+      "avg_gap": 10.577651507437105
+    },
+    "Jonas": {
+      "accuracy": 80.0,
+      "correct": 8,
+      "total": 10,
+      "avg_confidence": 39.75558403523998,
+      "avg_gap": 23.029086943231967
+    },
+    "Lameck": {
+      "accuracy": 10.0,
+      "correct": 1,
+      "total": 10,
+      "avg_confidence": 25.82280202538454,
+      "avg_gap": 8.148942356321443
+    },
+    "darmian": {
+      "accuracy": 90.0,
+      "correct": 9,
+      "total": 10,
+      "avg_confidence": 50.025337070906374,
+      "avg_gap": 36.07579453687818
+    }
+  }
+}

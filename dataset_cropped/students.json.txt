@@ -1,0 +1,36 @@
+{
+  "Abiud Mhenga": {
+    "Reg_no": "T22-03-12345",
+    "course": "nformation Technology"
+  },
+  "Adiliano Sindobewe": {
+    "Reg_no": "T22-03-12346",
+    "course": "Computer Science"
+  },
+  "Darmian Fransisco": {
+    "Reg_no": "BCS-02-0100-2023",
+    "course": "Computer Science"
+  }
+}
+{
+  "Jonas Japhet": {
+    "Reg_no": "T22-03-12345",
+    "course": "Information Technology"
+  },
+  "Irine Karumna": {
+    "Reg_no": "T22-03-12346",
+    "course": "Information Technology"
+  },
+  "Eneck Mwaseba": {
+    "Reg_no": "T22-03-12347",
+    "course": "Information Technology"
+  }
+}
+
+ },
+  "Lameck Kapuga": {
+    "Reg_no": "T22-03-12347",
+    "course": "Computer Science"
+  }
+}
+

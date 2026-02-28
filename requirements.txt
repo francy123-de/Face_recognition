@@ -1,0 +1,15 @@
+# Core dependencies
+tensorflow>=2.20.0
+tf-keras>=2.20.0
+deepface>=0.0.79
+opencv-python>=4.8.0
+numpy>=1.26.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+Pillow>=10.0.0
+
+# Web application
+flask>=3.0.0
+
+# Additional utilities
+retinaface>=0.0.13

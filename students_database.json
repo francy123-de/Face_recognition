@@ -1,0 +1,53 @@
+{
+  "students": {
+    "Abiud": {
+      "full_name": "Abiud Mhenga",
+      "registration_number": "BIT-02-0102-2023",
+      "course": "Information Technology",
+      "year": "3rd Year",
+      "email": "abiud@gmail.com"
+    },
+    "Adiriano": {
+      "full_name": "Adiriano Sindobewe",
+      "registration_number": "BCS-02-0147-2023",
+      "course": "Computer Science",
+      "year": "3rd Year",
+      "email": "adiriano@gmail.com"
+    },
+    "darmian": {
+      "full_name": "Darmian Fransisco",
+      "registration_number": "BCS-02-0100-2023",
+      "course": "Computer Science",
+      "year": "3th Year",
+      "email": "darmiangmail.com"
+    },
+    "Enecky": {
+      "full_name": "Enecky Mwaseba",
+      "registration_number": "BIT-02-0098-2023",
+      "course": "Information Technology",
+      "year": "3rd Year",
+      "email": "enecky@gmail.com"
+    },
+    "Irene": {
+      "full_name": "Irene Karumna",
+      "registration_number": "BIT-02-0048-2023",
+      "course": "Information Technology",
+      "year": "3rd Year",
+      "email": "irene@gmail.com"
+    },
+    "Jonas": {
+      "full_name": "Jonas Japhet",
+      "registration_number": "BIT-02-0072-2023",
+      "course": "Information Technology",
+      "year": "3rd Year",
+      "email": "jonas@gmail.com"
+    },
+    "Lameck": {
+      "full_name": "Lameck Kapuga",
+      "registration_number": "BCS-02-0111-2023",
+      "course": "Computer Science",
+      "year": "3rd Year",
+      "email": "lameck@gmail.com"
+    }
+  }
+}

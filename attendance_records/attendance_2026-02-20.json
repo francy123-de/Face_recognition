@@ -1,0 +1,48 @@
+{
+  "date": "2026-02-20",
+  "records": {
+    "Enecky": {
+      "full_name": "Enecky Mwaseba",
+      "registration_number": "BIT-02-0098-2023",
+      "course": "Information Technology",
+      "year": "3rd Year",
+      "timestamp": "2026-02-20 08:52:49",
+      "confidence": "33.6%",
+      "status": "Present"
+    },
+    "darmian": {
+      "full_name": "Darmian Fransisco",
+      "registration_number": "BCS-02-0100-2023",
+      "course": "Computer Science",
+      "year": "3th Year",
+      "timestamp": "2026-02-20 09:07:41",
+      "confidence": "51.7%",
+      "status": "Present"
+    },
+    "Irene": {
+      "full_name": "Irene Karumna",
+      "registration_number": "BIT-02-0048-2023",
+      "course": "Information Technology",
+      "year": "3rd Year",
+      "timestamp": "2026-02-20 09:07:50",
+      "confidence": "29.5%",
+      "status": "Present"
+    },
+    "Adiriano": {
+      "full_name": "Adiriano Sindobewe",
+      "registration_number": "BCS-02-0147-2023",
+      "course": "Computer Science",
+      "year": "3rd Year",
+      "timestamp": "2026-02-20 09:08:08",
+      "confidence": "27.2%",
+      "status": "Present"
+    }
+  },
+  "marked": [
+    "Adiriano",
+    "darmian",
+    "Irene",
+    "Enecky"
+  ],
+  "total_present": 4
+}

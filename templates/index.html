@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition Attendance System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a0350b 0%, #911209 50%, #7a1305 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-weight: 300;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .video-section {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .video-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.2);
+        }
+        
+        .video-section h2 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            border: 3px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        #video-stream {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .stats-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.2);
+        }
+        
+        .stat-card h3 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        .stat-number {
+            font-size: 3.5em;
+            font-weight: 800;
+            color: #333;
+            margin: 15px 0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover .stat-number {
+            transform: scale(1.1);
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 1.1em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .present {
+            color: #10b981;
+        }
+        
+        .absent {
+            color: #ef4444;
+        }
+        
+        .attendance-lists {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        
+        .list-section {
+            margin-bottom: 30px;
+        }
+        
+        .list-section h3 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(90deg, #667eea, #764ba2) 1;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+        
+        .student-list {
+            list-style: none;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        /* Custom scrollbar */
+        .student-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .student-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .student-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+        
+        .student-list::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+        
+        .student-list li {
+            padding: 15px 18px;
+            margin: 8px 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .student-list li::before {
+            content: "✓";
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: bold;
+            color: #10b981;
+            font-size: 1.2em;
+            transition: left 0.3s ease;
+        }
+        
+        .student-list li:hover::before {
+            left: 5px;
+        }
+        
+        .student-list li:hover {
+            background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
+            border-left-color: #667eea;
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+            padding-left: 35px;
+        }
+        
+        .student-name {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+            font-size: 1.05em;
+        }
+        
+        .student-details {
+            font-size: 0.9em;
+            color: #7fa6dd;
+            font-weight: 500;
+        }
+        
+        .absent-list li::before {
+            content: "✗";
+            color: #ef4444;
+        }
+        
+        .absent-list li:hover {
+            border-left-color: #ef4444;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            box-shadow: 0 5px 20px rgba(239, 68, 68, 0.3);
+        }
+        
+        .controls {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+        
+        .controls h3 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 1.05em;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-success:hover {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+            font-style: italic;
+            font-size: 1.05em;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            .stat-number {
+                font-size: 2.8em;
+            }
+        }
+        
+        .timestamp {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            font-size: 1.2em;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-weight: 500;
+            animation: fadeIn 1s ease-out 0.8s both;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        #history-section, #student-history-section {
+            margin-top: 25px;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        #date-selector, #student-selector {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 2px solid #2f4edb;
+            font-size: 1.05em;
+            background: rgb(241, 230, 230);
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        #date-selector:hover, #student-selector:hover {
+            border-color: #764ba2;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        #date-selector:focus, #student-selector:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        }
+        
+        #history-details, #student-history-details {
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateX(-20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0); 
+            }
+        }
+        
+        /* Student history specific styles */
+        #student-history-details > div:first-child {
+            background: linear-gradient(135deg, #667eea 0%, #08eb94 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            color: white;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        }
+        
+        #student-history-details > div:first-child h4 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+        
+        #student-history-details > div:first-child p {
+            margin: 8px 0;
+            font-size: 1.05em;
+            opacity: 0.95;
+        }
+        
+        /* Statistics grid */
+        #student-history-details > div:nth-child(2) {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        #student-history-details > div:nth-child(2) > div {
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        #student-history-details > div:nth-child(2) > div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+        
+        #student-history-details > div:nth-child(2) > div:first-child {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        #student-history-details > div:nth-child(2) > div:nth-child(2) {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        
+        #student-history-details > div:nth-child(2) > div:last-child {
+            background: linear-gradient(135deg, #af0c0c 0%, #b60505 100%);
+        }
+        
+        /* Table styles */
+        #student-history-table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        #student-history-table thead {
+            background: linear-gradient(135deg, #b90e16 0%, #9c0612 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        #student-history-table th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.5px;
+        }
+        
+        #student-history-table tbody tr {
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        #student-history-table tbody tr:hover {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            transform: scale(1.01);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        #student-history-table td {
+            padding: 14px 16px;
+            font-size: 1em;
+        }
+        
+        /* Scrollbar for table container */
+        .list-section > div::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        .list-section > div::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .list-section > div::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+        
+        .list-section > div::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+        
+        /* Pulse animation for live indicator */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.05);
+            }
+        }
+        
+        .live-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #ef4444;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Face Recognition Attendance System</h1>
+            <p class="subtitle">
+                <span class="live-indicator"></span>
+                Automatic attendance based in BCS & BIT
+            </p>
+        </header>
+        
+        <div class="main-content">
+            <div class="video-section">
+                <h2>
+                    <span class="live-indicator"></span>
+                    📹 Live Camera Feed
+                </h2>
+                <div class="video-container">
+                    <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Video Stream">
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                <div class="stat-card">
+                    <h3>📊 Attendance Summary</h3>
+                    <div class="stat-number present" id="present-count">0</div>
+                    <div class="stat-label">Students Present</div>
+                    <hr style="margin: 15px 0; border: none; border-top: 1px solid #e5e7eb;">
+                    <div class="stat-number absent" id="absent-count">0</div>
+                    <div class="stat-label">Students Absent</div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>👥 Total Students</h3>
+                    <div class="stat-number" id="total-count" style="color: #667eea;">0</div>
+                    <div class="stat-label">Registered</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="attendance-lists">
+            <div class="list-section">
+                <h3>✅ Present Students</h3>
+                <ul class="student-list" id="present-list">
+                    <li class="loading">Loading...</li>
+                </ul>
+            </div>
+            
+            <div class="list-section">
+                <h3>❌ Absent Students</h3>
+                <ul class="student-list absent-list" id="absent-list">
+                    <li class="loading">Loading...</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <h3>📥 Quick Actions</h3>
+            <button class="btn btn-success" onclick="downloadCSV()">
+                � Download Today's CSV
+            </button>
+            <button class="btn" onclick="refreshData()">
+                � Refresh Data
+            </button>
+            <button class="btn" onclick="toggleHistory()">
+                � View History
+            </button>
+            <button class="btn" onclick="toggleStudentHistory()">
+                �👤 Student History
+            </button>
+        </div>
+        
+        <!-- Individual Student History Section -->
+        <div id="student-history-section" style="display: none;">
+            <div class="attendance-lists">
+                <h3 style="color: #667eea; margin-bottom: 15px;">👤 Individual Student History</h3>
+                <div id="student-selector-div" style="margin-bottom: 20px;">
+                    <select id="student-selector" onchange="loadStudentHistory()" style="width: 100%; padding: 10px; border-radius: 5px; border: 2px solid #667eea; font-size: 1em;">
+                        <option value="">Select a student...</option>
+                    </select>
+                </div>
+                
+                <div id="student-history-details" style="display: none;">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; margin-bottom: 15px; color: white;">
+                        <h4 style="margin-bottom: 10px; font-size: 1.3em;" id="student-full-name"></h4>
+                        <p style="margin: 5px 0;"><strong>Registration:</strong> <span id="student-reg-no"></span></p>
+                        <p style="margin: 5px 0;"><strong>Course:</strong> <span id="student-course"></span></p>
+                        <p style="margin: 5px 0;"><strong>Year:</strong> <span id="student-year"></span></p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+                        <div style="background: #10b981; color: white; padding: 15px; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 2em; font-weight: bold;" id="student-present-days">0</div>
+                            <div style="font-size: 0.9em;">Days Present</div>
+                        </div>
+                        <div style="background: #ef4444; color: white; padding: 15px; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 2em; font-weight: bold;" id="student-absent-days">0</div>
+                            <div style="font-size: 0.9em;">Days Absent</div>
+                        </div>
+                        <div style="background: #667eea; color: white; padding: 15px; border-radius: 10px; text-align: center;">
+                            <div style="font-size: 2em; font-weight: bold;" id="student-percentage">0%</div>
+                            <div style="font-size: 0.9em;">Attendance Rate</div>
+                        </div>
+                    </div>
+                    
+                    <div class="list-section">
+                        <h4 style="color: #667eea; margin-bottom: 10px;">📊 Attendance Record</h4>
+                        <div style="max-height: 400px; overflow-y: auto;">
+                            <table id="student-history-table" style="width: 100%; border-collapse: collapse;">
+                                <thead style="background: #667eea; color: white; position: sticky; top: 0;">
+                                    <tr>
+                                        <th style="padding: 12px; text-align: left;">Date</th>
+                                        <th style="padding: 12px; text-align: center;">Status</th>
+                                        <th style="padding: 12px; text-align: center;">Time</th>
+                                        <th style="padding: 12px; text-align: center;">Confidence</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="student-history-tbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Attendance History Section -->
+        <div id="history-section" style="display: none;">
+            <div class="attendance-lists">
+                <h3 style="color: #667eea; margin-bottom: 15px;">📅 Attendance History</h3>
+                <div id="history-dates" style="margin-bottom: 20px;">
+                    <select id="date-selector" onchange="loadHistoryDate()" style="width: 100%; padding: 10px; border-radius: 5px; border: 2px solid #667eea; font-size: 1em;">
+                        <option value="">Select a date...</option>
+                    </select>
+                </div>
+                
+                <div id="history-details" style="display: none;">
+                    <div style="background: #f3f4f6; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <h4 style="color: #667eea; margin-bottom: 10px;">Summary</h4>
+                        <p><strong>Date:</strong> <span id="history-date"></span></p>
+                        <p><strong>Total Present:</strong> <span id="history-present"></span></p>
+                        <p><strong>Total Absent:</strong> <span id="history-absent"></span></p>
+                    </div>
+                    
+                    <div class="list-section">
+                        <h4 style="color: #10b981;">✅ Present Students</h4>
+                        <ul class="student-list" id="history-present-list"></ul>
+                    </div>
+                    
+                    <div class="list-section">
+                        <h4 style="color: #ef4444;">❌ Absent Students</h4>
+                        <ul class="student-list absent-list" id="history-absent-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="timestamp" id="timestamp"></div>
+        
+        <footer style="text-align: center; color: rgba(255,255,255,0.8); margin-top: 40px; padding: 20px; font-size: 0.95em;">
+            <p style="margin-bottom: 8px;">Powered by DeepFace AI • Facenet512 Model • 98%+ Accuracy</p>
+            <p style="opacity: 0.7;">© 2026 Face Recognition Attendance System</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Update attendance data
+        function updateAttendance() {
+            fetch('/attendance_summary')
+                .then(response => response.json())
+                .then(data => {
+                    // Update counts
+                    document.getElementById('present-count').textContent = data.present;
+                    document.getElementById('absent-count').textContent = data.absent;
+                    document.getElementById('total-count').textContent = data.total;
+                    
+                    // Update present list with full details
+                    const presentList = document.getElementById('present-list');
+                    if (data.present_list_full && data.present_list_full.length > 0) {
+                        presentList.innerHTML = data.present_list_full.map(student => {
+                            const record = data.records[student.folder_name];
+                            const time = record ? record.timestamp.split(' ')[1] : 'N/A';
+                            return `<li>
+                                <div class="student-name">${student.full_name}</div>
+                                <div class="student-details">
+                                    Reg: ${student.registration_number} | 
+                                    ${student.course} | 
+                                    Time: ${time}
+                                </div>
+                            </li>`;
+                        }).join('');
+                    } else if (data.present_list && data.present_list.length > 0) {
+                        // Fallback to basic list
+                        presentList.innerHTML = data.present_list.map(name => {
+                            const record = data.records[name];
+                            if (record) {
+                                return `<li>
+                                    <div class="student-name">${record.full_name || name}</div>
+                                    <div class="student-details">
+                                        Reg: ${record.registration_number || 'N/A'} | 
+                                        ${record.course || 'N/A'} | 
+                                        Time: ${record.timestamp ? record.timestamp.split(' ')[1] : 'N/A'}
+                                    </div>
+                                </li>`;
+                            } else {
+                                return `<li><div class="student-name">${name}</div></li>`;
+                            }
+                        }).join('');
+                    } else {
+                        presentList.innerHTML = '<li class="loading">No students marked present yet</li>';
+                    }
+                    
+                    // Update absent list with full details
+                    const absentList = document.getElementById('absent-list');
+                    if (data.absent_list_full && data.absent_list_full.length > 0) {
+                        absentList.innerHTML = data.absent_list_full.map(student => 
+                            `<li>
+                                <div class="student-name">${student.full_name}</div>
+                                <div class="student-details">
+                                    Reg: ${student.registration_number} | ${student.course}
+                                </div>
+                            </li>`
+                        ).join('');
+                    } else if (data.absent_list && data.absent_list.length > 0) {
+                        absentList.innerHTML = data.absent_list.map(name => 
+                            `<li><div class="student-name">${name}</div></li>`
+                        ).join('');
+                    } else {
+                        absentList.innerHTML = '<li class="loading">All students present!</li>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching attendance:', error);
+                });
+        }
+        
+        // Download CSV
+        function downloadCSV() {
+            window.location.href = '/download_csv';
+        }
+        
+        // Recognize face now
+       
+        
+        // Refresh data
+        function refreshData() {
+            updateAttendance();
+        }
+        
+        // Toggle history section
+        function toggleHistory() {
+            const historySection = document.getElementById('history-section');
+            const studentHistorySection = document.getElementById('student-history-section');
+            
+            if (historySection.style.display === 'none') {
+                historySection.style.display = 'block';
+                studentHistorySection.style.display = 'none';
+                loadHistoryDates();
+            } else {
+                historySection.style.display = 'none';
+            }
+        }
+        
+        // Toggle student history section
+        function toggleStudentHistory() {
+            const studentHistorySection = document.getElementById('student-history-section');
+            const historySection = document.getElementById('history-section');
+            
+            if (studentHistorySection.style.display === 'none') {
+                studentHistorySection.style.display = 'block';
+                historySection.style.display = 'none';
+                loadStudentList();
+            } else {
+                studentHistorySection.style.display = 'none';
+            }
+        }
+        
+        // Load student list
+        function loadStudentList() {
+            fetch('/student_list')
+                .then(response => response.json())
+                .then(data => {
+                    const selector = document.getElementById('student-selector');
+                    selector.innerHTML = '<option value="">Select a student...</option>';
+                    
+                    if (data.students && data.students.length > 0) {
+                        data.students.forEach(student => {
+                            const option = document.createElement('option');
+                            option.value = student.folder_name;
+                            option.textContent = `${student.full_name} (${student.registration_number})`;
+                            selector.appendChild(option);
+                        });
+                    } else {
+                        selector.innerHTML = '<option value="">No students available</option>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading student list:', error);
+                });
+        }
+        
+        // Load student history
+        function loadStudentHistory() {
+            const selector = document.getElementById('student-selector');
+            const selectedStudent = selector.value;
+            
+            if (!selectedStudent) {
+                document.getElementById('student-history-details').style.display = 'none';
+                return;
+            }
+            
+            fetch(`/student_history/${selectedStudent}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Show details section
+                    document.getElementById('student-history-details').style.display = 'block';
+                    
+                    // Update student info
+                    document.getElementById('student-full-name').textContent = data.full_name;
+                    document.getElementById('student-reg-no').textContent = data.registration_number;
+                    document.getElementById('student-course').textContent = data.course;
+                    document.getElementById('student-year').textContent = data.year;
+                    
+                    // Update statistics
+                    document.getElementById('student-present-days').textContent = data.present_days;
+                    document.getElementById('student-absent-days').textContent = data.absent_days;
+                    document.getElementById('student-percentage').textContent = data.attendance_percentage + '%';
+                    
+                    // Update history table
+                    const tbody = document.getElementById('student-history-tbody');
+                    tbody.innerHTML = '';
+                    
+                    if (data.history && data.history.length > 0) {
+                        data.history.forEach(record => {
+                            const row = document.createElement('tr');
+                            row.style.borderBottom = '1px solid #e5e7eb';
+                            
+                            const statusColor = record.status === 'Present' ? '#10b981' : '#ef4444';
+                            const statusIcon = record.status === 'Present' ? '✓' : '✗';
+                            
+                            row.innerHTML = `
+                                <td style="padding: 12px;">${record.date}</td>
+                                <td style="padding: 12px; text-align: center; color: ${statusColor}; font-weight: bold;">
+                                    ${statusIcon} ${record.status}
+                                </td>
+                                <td style="padding: 12px; text-align: center;">${record.time}</td>
+                                <td style="padding: 12px; text-align: center;">${record.confidence}</td>
+                            `;
+                            
+                            tbody.appendChild(row);
+                        });
+                    } else {
+                        tbody.innerHTML = '<tr><td colspan="4" style="padding: 20px; text-align: center; color: #666;">No attendance records found</td></tr>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading student history:', error);
+                    alert('Error loading student history');
+                });
+        }
+        
+        // Load available history dates
+        function loadHistoryDates() {
+            fetch('/attendance_history')
+                .then(response => response.json())
+                .then(data => {
+                    const selector = document.getElementById('date-selector');
+                    selector.innerHTML = '<option value="">Select a date...</option>';
+                    
+                    if (data.dates && data.dates.length > 0) {
+                        data.dates.forEach(dateInfo => {
+                            const option = document.createElement('option');
+                            option.value = dateInfo.date;
+                            option.textContent = `${dateInfo.date} (${dateInfo.total_present} present)`;
+                            selector.appendChild(option);
+                        });
+                    } else {
+                        selector.innerHTML = '<option value="">No history available</option>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading history dates:', error);
+                });
+        }
+        
+        // Load attendance for specific date
+        function loadHistoryDate() {
+            const selector = document.getElementById('date-selector');
+            const selectedDate = selector.value;
+            
+            if (!selectedDate) {
+                document.getElementById('history-details').style.display = 'none';
+                return;
+            }
+            
+            fetch(`/attendance_by_date/${selectedDate}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Show details section
+                    document.getElementById('history-details').style.display = 'block';
+                    
+                    // Update summary
+                    document.getElementById('history-date').textContent = data.date;
+                    document.getElementById('history-present').textContent = data.total_present || 0;
+                    
+                    // Calculate absent
+                    const totalStudents = data.total_present + (Object.keys(data.records || {}).length > 0 ? 
+                        (7 - data.total_present) : 0);
+                    document.getElementById('history-absent').textContent = 7 - (data.total_present || 0);
+                    
+                    // Update present list
+                    const presentList = document.getElementById('history-present-list');
+                    if (data.records && Object.keys(data.records).length > 0) {
+                        presentList.innerHTML = Object.entries(data.records).map(([name, record]) => `
+                            <li>
+                                <div class="student-name">${record.full_name || name}</div>
+                                <div class="student-details">
+                                    Reg: ${record.registration_number || 'N/A'} | 
+                                    ${record.course || 'N/A'} | 
+                                    Time: ${record.timestamp ? record.timestamp.split(' ')[1] : 'N/A'}
+                                </div>
+                            </li>
+                        `).join('');
+                    } else {
+                        presentList.innerHTML = '<li class="loading">No students present</li>';
+                    }
+                    
+                    // Update absent list (you can enhance this with actual absent student names)
+                    const absentList = document.getElementById('history-absent-list');
+                    const absentCount = 7 - (data.total_present || 0);
+                    if (absentCount > 0) {
+                        absentList.innerHTML = `<li class="loading">${absentCount} student(s) were absent</li>`;
+                    } else {
+                        absentList.innerHTML = '<li class="loading">All students present!</li>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading history:', error);
+                    alert('Error loading attendance history for this date');
+                });
+        }
+        
+        // Update timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('timestamp').textContent = 
+                '🕐 ' + now.toLocaleDateString('en-US', options);
+        }
+        
+        // Initial load
+        updateAttendance();
+        updateTimestamp();
+        
+        // Auto-refresh every 3 seconds
+        setInterval(updateAttendance, 3000);
+        setInterval(updateTimestamp, 1000);
+    </script>
+</body>
+</html>

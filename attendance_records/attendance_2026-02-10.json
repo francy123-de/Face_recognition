@@ -1,0 +1,68 @@
+{
+  "date": "2026-02-10",
+  "records": {
+    "darmian": {
+      "full_name": "Darmian Fransisco",
+      "registration_number": "BCS-02-0100-2023",
+      "course": "Computer Science",
+      "year": "3th Year",
+      "timestamp": "2026-02-10 11:34:26",
+      "confidence": "57.7%",
+      "status": "Present"
+    },
+    "Irene": {
+      "full_name": "Irene Karumna",
+      "registration_number": "BIT-02-0048-2023",
+      "course": "Information Technology",
+      "year": "3rd Year",
+      "timestamp": "2026-02-10 11:34:39",
+      "confidence": "35.1%",
+      "status": "Present"
+    },
+    "Abiud": {
+      "full_name": "Abiud Mhenga",
+      "registration_number": "BIT-02-0102-2023",
+      "course": "Information Technology",
+      "year": "3rd Year",
+      "timestamp": "2026-02-10 11:35:15",
+      "confidence": "42.7%",
+      "status": "Present"
+    },
+    "Lameck": {
+      "full_name": "Lameck Kapuga",
+      "registration_number": "BCS-02-0111-2023",
+      "course": "Computer Science",
+      "year": "3rd Year",
+      "timestamp": "2026-02-10 11:35:18",
+      "confidence": "43.2%",
+      "status": "Present"
+    },
+    "Adiriano": {
+      "full_name": "Adiriano Sindobewe",
+      "registration_number": "BCS-02-0147-2023",
+      "course": "Computer Science",
+      "year": "3rd Year",
+      "timestamp": "2026-02-10 11:36:41",
+      "confidence": "73.3%",
+      "status": "Present"
+    },
+    "Enecky": {
+      "full_name": "Enecky Mwaseba",
+      "registration_number": "BIT-02-0098-2023",
+      "course": "Information Technology",
+      "year": "3rd Year",
+      "timestamp": "2026-02-10 11:37:07",
+      "confidence": "38.4%",
+      "status": "Present"
+    }
+  },
+  "marked": [
+    "Lameck",
+    "Adiriano",
+    "darmian",
+    "Enecky",
+    "Irene",
+    "Abiud"
+  ],
+  "total_present": 6
+}

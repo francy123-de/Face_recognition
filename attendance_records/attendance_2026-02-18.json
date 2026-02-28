@@ -1,0 +1,18 @@
+{
+  "date": "2026-02-18",
+  "records": {
+    "darmian": {
+      "full_name": "Darmian Fransisco",
+      "registration_number": "BCS-02-0100-2023",
+      "course": "Computer Science",
+      "year": "3th Year",
+      "timestamp": "2026-02-18 08:39:31",
+      "confidence": "55.8%",
+      "status": "Present"
+    }
+  },
+  "marked": [
+    "darmian"
+  ],
+  "total_present": 1
+}
